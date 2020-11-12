@@ -72,7 +72,7 @@ class Products extends Component {
                           </Button>
                         )}
                       </CartContext.Consumer>
-                      <ModalEdit />
+                      <ModalEdit id={product.id} />
                       <Button
                         className="btn-danger"
                         onClick={() => this.onDeleteCard(product.id)}
