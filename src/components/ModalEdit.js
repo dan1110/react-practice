@@ -26,26 +26,30 @@ class ModalEdit extends Component {
     this.updateProduct = this.updateProduct.bind(this);
     this.toggle = this.toggle.bind(this);
     this.onOpen = this.onOpen.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  updateProduct() {
-    // console.log("say lala");
-    // console.log(this.state.products);
-    const { products } = this.state;
+  handleChange = (e, field) => {
+    this.setState({
+      [field]: e.target.value,
+    });
+  };
 
-    // axios
-    //   .get("https://5f60857c90cf8d0016557e14.mockapi.io/Studens")
-    //   .then((res) => {
-    //     this.setState({
-    //       products: res.data,
-    //     });
-    //     products.map((product) => {
-    //       return console.log(product.id);
-    //     });
-    //   });
-    // this.setState({
-    //     products: []
-    // })
+  updateProduct(id) {
+    const { imageUrl, name, description } = this.state;
+
+    axios
+      .put("https://5f60857c90cf8d0016557e14.mockapi.io/Studens/" + id, {
+        imageUrl: imageUrl,
+        name: name,
+        description: description,
+      })
+      .then((res) => {
+        this.setState({
+          products: res.data,
+          modal: !this.state.modal,
+        });
+      });
   }
 
   toggle() {
@@ -84,20 +88,41 @@ class ModalEdit extends Component {
             <Form>
               <FormGroup>
                 <Label for="exampleUrl">Url Image Product</Label>
-                <Input type="text" name="url" id="imageUrl" value={imageUrl} />
+                <Input
+                  type="text"
+                  name="url"
+                  id="imageUrl"
+                  value={imageUrl}
+                  onChange={(e) => this.handleChange(e, "imageUrl")}
+                />
               </FormGroup>
               <FormGroup>
                 <Label for="examplePassword">Name Product</Label>
-                <Input type="" name="" id="titleCard" value={name}/>
+                <Input
+                  type=""
+                  name=""
+                  id="titleCard"
+                  value={name}
+                  onChange={(e) => this.handleChange(e, "name")}
+                />
               </FormGroup>
               <FormGroup>
                 <Label for="exampleText">Description Product</Label>
-                <Input type="textarea" name="text" id="descriptionText" value={description}/>
+                <Input
+                  type="textarea"
+                  name="text"
+                  id="descriptionText"
+                  value={description}
+                  onChange={(e) => this.handleChange(e, "description")}
+                />
               </FormGroup>
             </Form>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={() => this.updateProduct()}>
+            <Button
+              color="primary"
+              onClick={() => this.updateProduct(this.props.id)}
+            >
               Update Product
             </Button>{" "}
             <Button color="secondary" onClick={this.toggle}>

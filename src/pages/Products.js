@@ -39,6 +39,7 @@ class Products extends Component {
     axios
       .delete(`https://5f60857c90cf8d0016557e14.mockapi.io/Studens/${_id}`)
       .then((res) => {
+        console.log(res);
         const items = this.state.products;
         const newProducts = items.filter((item) => item.id !== res.data.id);
         this.setState({
