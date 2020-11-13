@@ -11,10 +11,11 @@ import {
   Col,
 } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import "font-awesome/css/font-awesome.min.css";
 import { CartContext } from "../contexts/Cart";
 import ModalEdit from "../components/ModalEdit";
+import AddProduct from "../pages/AddProduct";
 
 class Products extends Component {
   constructor(props) {
@@ -39,7 +40,6 @@ class Products extends Component {
     axios
       .delete(`https://5f60857c90cf8d0016557e14.mockapi.io/Studens/${_id}`)
       .then((res) => {
-        console.log(res);
         const items = this.state.products;
         const newProducts = items.filter((item) => item.id !== res.data.id);
         this.setState({
@@ -87,7 +87,7 @@ class Products extends Component {
             );
           })}
           <Col sm="4" className="mt-4">
-            <Card
+            {/* <Card
               className="d-flex justify-content-center align-items-center"
               style={{
                 width: "100%",
@@ -102,7 +102,8 @@ class Products extends Component {
                 </div>
                 <span>Add Product</span>
               </Link>
-            </Card>
+            </Card> */}
+            <AddProduct />
           </Col>
         </Row>
       </Container>
