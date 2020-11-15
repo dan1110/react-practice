@@ -23,7 +23,7 @@ class ModalEdit extends Component {
       modal: false,
       products: [],
     };
-    this.updateProduct = this.updateProduct.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
     this.toggle = this.toggle.bind(this);
     this.onOpen = this.onOpen.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -35,21 +35,18 @@ class ModalEdit extends Component {
     });
   };
 
-  updateProduct(id) {
+  handleUpdate(id) {
     const { imageUrl, name, description } = this.state;
-
-    axios
-      .put("https://5f60857c90cf8d0016557e14.mockapi.io/Studens/" + id, {
-        imageUrl: imageUrl,
-        name: name,
-        description: description,
-      })
-      .then((res) => {
-        this.setState({
-          products: res.data,
-          modal: !this.state.modal,
-        });
-      });
+    let data = {
+      id: id,
+      imageUrl: imageUrl,
+      name: name,
+      description: description,
+    }
+    this.props.updateProduct(data)
+    this.setState({
+      modal: !this.state.modal,
+    })
   }
 
   toggle() {
@@ -121,7 +118,7 @@ class ModalEdit extends Component {
           <ModalFooter>
             <Button
               color="primary"
-              onClick={() => this.updateProduct(this.props.id)}
+              onClick={() => this.handleUpdate(this.props.id)}
             >
               Update Product
             </Button>{" "}

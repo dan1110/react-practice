@@ -37,16 +37,60 @@ class Products extends Component {
   }
 
   onDeleteCard(_id) {
+    /*
+    
+    danhSachNY = [
+      'Tinh', 'Quang', 'Phong'
+    ];
+    filter Phong(hien tai)
+    danhNyc = danhSachNY.filter((thangNguoiYeu) => thangNguoiYeu !== 'Phong');
+    danhNyc = [tinh, quang];
+    */
+    const { products } = this.state;
     axios
       .delete(`https://5f60857c90cf8d0016557e14.mockapi.io/Studens/${_id}`)
       .then((res) => {
-        const items = this.state.products;
-        const newProducts = items.filter((item) => item.id !== res.data.id);
+        const newProducts = products.filter(
+          (product) => product.id !== res.data.id
+        );
         this.setState({
           products: newProducts,
         });
       });
   }
+
+  addProduct = (data) => {
+    const { products } = this.state;
+    axios
+      .post("https://5f60857c90cf8d0016557e14.mockapi.io/Studens", data)
+      .then((res) => {
+        console.log(res.data);
+        this.setState({
+          products: products.concat(res.data),
+        });
+      });
+  };
+
+  updateProduct = (data) => {
+    const { products } = this.state;
+    axios
+      .put(
+        "https://5f60857c90cf8d0016557e14.mockapi.io/Studens/" + data.id,
+        data
+      )
+      .then((res) => {
+        const index = products.findIndex(
+          (product) => product.id === res.data.id
+        );
+        this.setState({
+          products: [
+            ...products.slice(0, index),
+            Object.assign({}, products[index], res.data),
+            ...products.slice(index + 1),
+          ],
+        });
+      });
+  };
 
   render() {
     const { products } = this.state;
@@ -73,7 +117,10 @@ class Products extends Component {
                           </Button>
                         )}
                       </CartContext.Consumer>
-                      <ModalEdit id={product.id} />
+                      <ModalEdit
+                        id={product.id}
+                        updateProduct={this.updateProduct}
+                      />
                       <Button
                         className="btn-danger"
                         onClick={() => this.onDeleteCard(product.id)}
@@ -103,7 +150,7 @@ class Products extends Component {
                 <span>Add Product</span>
               </Link>
             </Card> */}
-            <AddProduct />
+            <AddProduct addProduct={this.addProduct} />
           </Col>
         </Row>
       </Container>
